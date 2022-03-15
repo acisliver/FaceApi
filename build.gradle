@@ -20,6 +20,9 @@ dependencies {
 
     testCompileOnly 'org.projectlombok:lombok:1.18.22'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    implementation 'junit:junit:4.12'
+    testImplementation 'org.hamcrest:hamcrest:2.1'
 }
 
 test {
