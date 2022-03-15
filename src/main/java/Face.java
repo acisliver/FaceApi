@@ -34,7 +34,9 @@ public class Face {
             jo.put("url", imageWithFaces);
 
             // Execute the REST API call and get the response entity.
-            HttpResponse response = httpRequestFacade.getHttpResponse(HttpRequestFacade.HttpRequestMethod.POST,builder,jo);
+            HttpResponse response = httpRequestFacade.getHttpResponse(HttpRequestFacade.HttpRequestMethod.POST,
+                    builder,
+                    jo);
             HttpEntity entity = response.getEntity();
 
             return EntityUtils.toString(entity);
@@ -46,7 +48,6 @@ public class Face {
     }
 
     public String findSimilar(String faceId,String[] faceIds){
-
         String path="findsimilars";
 
         JSONObject jo = new JSONObject();
@@ -56,7 +57,10 @@ public class Face {
         jo.put("faceIds", faceIds);
 
         try {
-            HttpResponse response=httpRequestFacade.getHttpResponse(HttpRequestFacade.HttpRequestMethod.POST,httpRequestFacade.getUriBuilder(path),jo);
+            HttpResponse response=httpRequestFacade.getHttpResponse(
+                    HttpRequestFacade.HttpRequestMethod.POST,
+                    httpRequestFacade.getUriBuilder(path),
+                    jo);
             HttpEntity entity=response.getEntity();
             return EntityUtils.toString(entity);
         } catch (URISyntaxException | IOException e) {
@@ -66,7 +70,6 @@ public class Face {
     }
 
     public String group(String[] faceIds) {
-
         String path = "group";
 
         JSONObject jo = new JSONObject();
@@ -75,13 +78,39 @@ public class Face {
 
         HttpResponse response = null;
         try {
-            response = httpRequestFacade.getHttpResponse(HttpRequestFacade.HttpRequestMethod.POST, httpRequestFacade.getUriBuilder(path), jo);
+            response = httpRequestFacade.getHttpResponse(
+                    HttpRequestFacade.HttpRequestMethod.POST,
+                    httpRequestFacade.getUriBuilder(path),
+                    jo);
             HttpEntity entity = response.getEntity();
             return EntityUtils.toString(entity);
         } catch (URISyntaxException | IOException e) {
             e.printStackTrace();
             return e.getMessage();
         }
+    }
 
+    public String verify(String detectedFace1, String detectedFace2){
+        String path = "verify";
+
+        JSONObject jo = new JSONObject();
+        jo.put("faceId1", detectedFace1);
+        jo.put("faceId2", detectedFace2);
+        try {
+            HttpResponse response = httpRequestFacade.getHttpResponse(
+                    HttpRequestFacade.HttpRequestMethod.POST,
+                    httpRequestFacade.getUriBuilder(path),
+                    jo);
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                return EntityUtils.toString(entity).trim();
+            }
+            return null;
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
